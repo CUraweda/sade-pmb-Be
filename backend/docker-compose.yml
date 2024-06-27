@@ -1,0 +1,35 @@
+version: '3'
+services:
+   db-sa:
+      image: mariadb:10.9.4
+      container_name: db-sa
+      restart: unless-stopped
+      environment:
+        MYSQL_ROOT_PASSWORD: d3vs4de#2023
+        MYSQL_DATABASE: db
+      volumes:
+      - ./../db:/var/lib/mysql
+      ports:
+        - 3306
+   app-sa:
+      build: .
+      container_name: app-sa
+      restart: unless-stopped
+      depends_on:
+         - db-sa
+      volumes:
+      - ./files:/app/files
+      ports:
+        - 5000:5000
+   myadmin-sa:
+      image: phpmyadmin
+      container_name: myadmin-sa
+      restart: unless-stopped
+      environment:
+        PMA_HOST: db-sa
+      ports:
+        - 1001:80
+networks:
+   default:
+      external:
+         name: my-networks
