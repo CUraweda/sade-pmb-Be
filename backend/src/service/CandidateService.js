@@ -202,6 +202,17 @@ class CandidateService {
     return responseHandler.returnSuccess(httpStatus.OK, message, candidate);
   }
 
+  async getCandidateExportData(id) {
+    const candidate = await this.candidatesDao.getExportData(id)
+    if (!candidate) {
+      return responseHandler.returnError(
+        httpStatus.NOT_FOUND,
+        "Candidate not found!"
+      );
+    }
+    return candidate
+  }
+
   async getOneCandidate(id) {
     const message = "Candidate successfully retrieved!";
 
@@ -322,6 +333,24 @@ class CandidateService {
     return responseHandler.returnSuccess(httpStatus.OK, message, data);
   }
 
+  createJSON = async (data) => {
+    let { parents } = data
+    if (parents) {
+      const parentData = {}
+      for (let parent of parents) {
+        if (!parentData[parent.parent_type]) parentData[parent.parent_type] = parent
+      }
+      delete data.parents
+      parents = parentData
+    }
+    const jsonData = { candidate: data, parents }
+    return responseHandler.returnSuccess(
+      httpStatus.OK,
+      "Successfully Exported",
+      jsonData
+    );
+  }
+
   createPdf = async (data, path) => {
     const id = data.candidate.id;
     // console.log(id);
@@ -424,8 +453,8 @@ class CandidateService {
       .lineGap(5)
       .text(
         "Paket formulir penerimaan siswa baru Sekolah Alam Depok merupakan persyaratan yang harus diisi oleh orangtua/wali " +
-          "siswa setelah menyetujui prosedur dan ketentuan penerimaan siswa baru yang telah dijelaskan. Formulir ini harus " +
-          "ditandatangani dan dikembalikan ke Sekolah Alam Depok . Mohon dibaca dengan teliti.",
+        "siswa setelah menyetujui prosedur dan ketentuan penerimaan siswa baru yang telah dijelaskan. Formulir ini harus " +
+        "ditandatangani dan dikembalikan ke Sekolah Alam Depok . Mohon dibaca dengan teliti.",
         leftIndent,
         customerInformationTop,
         { align: "justify", width: 500 }
@@ -486,8 +515,8 @@ class CandidateService {
       .lineGap(5)
       .text(
         "Kami telah membaca dan memahami serta menyetujui persyaratan dan prosedur keuangan Sekolah Alam Depok. Apabila di kemudian " +
-          "hari kami melakukan pelanggaran ketentuan/ peraturan /tata tertib yang telah ditetapkan sekolah, maka kami setuju menerima " +
-          "konsekuensi sesuai dengan ketentuan yang berlaku.",
+        "hari kami melakukan pelanggaran ketentuan/ peraturan /tata tertib yang telah ditetapkan sekolah, maka kami setuju menerima " +
+        "konsekuensi sesuai dengan ketentuan yang berlaku.",
         leftIndent,
         customerInformationTop + 160,
         { align: "justify", width: 500 }
@@ -508,7 +537,7 @@ class CandidateService {
       .lineGap(5)
       .text(
         "Kami memahami apabila di kemudian hari kami/putra-putri kami melakukan pelanggaran ketentuan/peraturan/ tata tertib yang telah " +
-          "ditetapkan kelas maupun sekolah, maka kami bersedia menerima konsekuensi sesuai dengan ketentuan yang berlaku.",
+        "ditetapkan kelas maupun sekolah, maka kami bersedia menerima konsekuensi sesuai dengan ketentuan yang berlaku.",
         leftIndent,
         customerInformationTop + 230,
         { align: "justify", width: 500 }
@@ -520,7 +549,7 @@ class CandidateService {
       .lineGap(5)
       .text(
         "Dengan ini kami menyatakan telah membaca dan memahami serta menyetujui semua persyaratan, prosedur dan tata-tertib di " +
-          "Sekolah Alam Depok. Kami juga menyatakan bahwa data yang diberikan dalam formulir ini adalah informasi yang sebenar-benarnya",
+        "Sekolah Alam Depok. Kami juga menyatakan bahwa data yang diberikan dalam formulir ini adalah informasi yang sebenar-benarnya",
         leftIndent,
         customerInformationTop + 285,
         { align: "justify", width: 500 }
@@ -633,10 +662,10 @@ class CandidateService {
       .text("Urutan dalam keluarga", leftIndent, customerInformationTop + 75)
       .text(
         ": anak ke-" +
-          data.birth_order +
-          " dari " +
-          data.number_of_siblings +
-          " bersaudara",
+        data.birth_order +
+        " dari " +
+        data.number_of_siblings +
+        " bersaudara",
         tabIndent,
         customerInformationTop + 75
       );
@@ -1031,9 +1060,9 @@ class CandidateService {
       .lineGap(5)
       .text(
         "Kami sebagai calon orang tua/wali murid " +
-          data.candidate.full_name +
-          " memberi kuasa kepada sekolah untuk memberikan pertolongan pertama apabila " +
-          "terjadi keadaan gawat darurat atau kecelakaan pada anak kami di sekolah, yang memerlukan penanganan (perawatan) secepatnya.",
+        data.candidate.full_name +
+        " memberi kuasa kepada sekolah untuk memberikan pertolongan pertama apabila " +
+        "terjadi keadaan gawat darurat atau kecelakaan pada anak kami di sekolah, yang memerlukan penanganan (perawatan) secepatnya.",
         leftIndent,
         customerInformationTop + 15,
         { align: "justify", width: 500 }
@@ -1081,9 +1110,9 @@ class CandidateService {
       .text("Tempat/Tgl Lahir", leftIndent, customerInformationTop + 195)
       .text(
         ": " +
-          data.candidate.pob +
-          ", " +
-          this.formatDate(new Date(data.candidate.dob)),
+        data.candidate.pob +
+        ", " +
+        this.formatDate(new Date(data.candidate.dob)),
         tabIndent,
         customerInformationTop + 195
       );

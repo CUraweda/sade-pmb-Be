@@ -1,6 +1,7 @@
 const app = require("./app");
 const config = require("./config/config");
 const https = require("https");
+// const http = require('http')
 const fs = require("fs");
 
 var key = fs.readFileSync("./certs/sade.key");
@@ -13,10 +14,10 @@ var options = {
 console.log("Hello Sekolah Alam!");
 // require('./cronJobs');
 // eslint-disable-next-line import/order
-// const http = require("http");
+const http = require("http");
 // socket initialization
-// const server = http.createServer(app);
-const server = https.createServer(options, app);
+const server = http.createServer(app);
+// const server = https.createServer(options, app);
 // eslint-disable-next-line import/order
 const io = require("socket.io")(server, { cors: { origin: "*" } });
 
