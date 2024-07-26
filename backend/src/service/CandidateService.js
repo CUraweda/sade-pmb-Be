@@ -649,23 +649,23 @@ class CandidateService {
     doc
       .font("Helvetica")
       .text("Provinsi", leftIndent, customerInformationTop + 120)
-      .text(": " + data.province.name, tabIndent, customerInformationTop + 120);
+      .text(": " + data.province?.name || "", tabIndent, customerInformationTop + 120);
     this.generateHr(doc, customerInformationTop + 130);
     doc
       .font("Helvetica")
       .text("Kota/Kab", leftIndent, customerInformationTop + 135)
-      .text(": " + data.city.name, tabIndent, customerInformationTop + 135);
+      .text(": " + data.city?.name || "", tabIndent, customerInformationTop + 135);
     this.generateHr(doc, customerInformationTop + 145);
     doc
       .font("Helvetica")
       .text("Kecamatan", leftIndent, customerInformationTop + 150)
-      .text(": " + data.district.name, tabIndent, customerInformationTop + 150);
+      .text(": " + data.district?.name || "", tabIndent, customerInformationTop + 150);
     this.generateHr(doc, customerInformationTop + 160);
     doc
       .font("Helvetica")
       .text("Kelurahan", leftIndent, customerInformationTop + 165)
       .text(
-        ": " + data.subdistrict.name,
+        ": " + data.subdistrict?.name || "",
         tabIndent,
         customerInformationTop + 165
       );

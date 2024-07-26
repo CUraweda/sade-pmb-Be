@@ -9,14 +9,23 @@ const handlebars = require("handlebars");
 const fs = require("fs");
 
 const transporter = nodemailer.createTransport({
-  host: config.email.host,
-  port: config.email.port,
-  secure: true,
+  //? Gmail Method
+  service: "gmail",
   auth: {
-    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
     user: config.email.account,
     pass: config.email.password,
   },
+
+
+  //?SMPT Method
+  // host: config.email.host,
+  // port: config.email.port,
+  // secure: true,
+  // auth: {
+  //   // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+  //   user: config.email.account,
+  //   pass: config.email.password,
+  // },
 });
 
 var readHTMLFile = function (path, callback) {
