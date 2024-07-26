@@ -9,6 +9,7 @@ const { tokenTypes } = require("../config/tokens");
 // const data = require("../../files/sample/candidates.json");
 const dir = "./files/export/pdf";
 const dir_ex = "./files/export/excel";
+const dir_json = "./files/export/json"
 const fs = require("fs");
 
 class CandidatesController {
@@ -180,8 +181,7 @@ class CandidatesController {
       const siblingData = await this.candidateService.getOneSiblings(id);
       const parentData = await this.candidateService.getOneParents(id);
       const healthData = await this.candidateService.getOneHealth(id);
-      const medicalHistoryData =
-        await this.candidateService.getOneMedicalHistory(id);
+      const medicalHistoryData = await this.candidateService.getOneMedicalHistory(id);
       const sensesData = await this.candidateService.getOneSenses(id);
       const relationshipData = await this.candidateService.getOneRelationship(
         id
@@ -234,11 +234,26 @@ class CandidatesController {
     }
   };
 
+  exportJSON = async (req, res) => {
+    try {
+      const { id } = req.params
+      const data = await this.candidateService.getCandidateExportData(id)      
+      const responseData = await this.candidateService.createJSON(data)
+      
+      res.status(responseData.statusCode).send(responseData.response);
+    } catch (e) {
+      logger.error(e);
+      res.status(httpStatus.BAD_GATEWAY).send(e);
+
+    }
+  }
+
   exportExcel = async (req, res) => {
     try {
       var id = req.params.id;
       const path_excel = dir_ex + "/" + Date.now() + "_candidate.xlsx";
 
+      console.log(path_excel)
       let candidateData = await this.candidateService.getCandidate(id);
 
       if (candidateData.response.data.length === 0) {

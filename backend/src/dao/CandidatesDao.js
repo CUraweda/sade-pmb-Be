@@ -12,6 +12,7 @@ const SubDistricts = models.subdistricts;
 const HealthForm = models.healthform;
 const MedicalHistory = models.medicalhistory;
 const Senses = models.senses;
+const User = models.user;
 const Relationship = models.relationship;
 const Questionnaire = models.questionnaire;
 
@@ -84,6 +85,15 @@ class CandidatesDao extends SuperDao {
         // },
       ],
     });
+  }
+
+  async getExportData(id){
+    return Candidates.findOne({
+      where: { id },
+      include: [
+        { model: Parents },
+      ]
+    })
   }
 
   async getOneCandidate(id) {
