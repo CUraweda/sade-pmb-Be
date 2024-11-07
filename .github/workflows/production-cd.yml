@@ -24,9 +24,8 @@ jobs:
           port: 22
           debug: true
           script: |
-            cd production/sade-pmb-Be
+            cd production/sade-pmb-Be/backend
             git pull origin main
-            cd backend
             npm i
             npx sequelize db:migrate 
             pm2 restart 3
