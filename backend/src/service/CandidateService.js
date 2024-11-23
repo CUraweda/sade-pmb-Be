@@ -52,57 +52,73 @@ class CandidateService {
     }
   };
 
-  updateCandidate = async (id, body) => {
-    const message = "Candidate successfully updated!";
+  updateCandidates = async (id, body) => {
+    try {
+      let message = "Candidate successfully updated.";
+      let candidate = await this.candidatesDao.findById(id)
+      if (!candidate) {
+        return responseHandler.returnError(
+          httpStatus.NOT_FOUND,
+          "Candidate not found!"
+        );
+      }
+      
+      const updateData = await this.candidatesDao.updateWhere(
+        {
+          nisn: body.nisn,
+          full_name: body.full_name,
+          nick_name: body.nick_name,
+          gender: body.gender,
+          dob: body.dob,
+          pob: body.pob,
+          birth_order: body.birth_order,
+          number_of_siblings: body.number_of_siblings,
+          province_id: body.province_id,
+          city_id: body.city_id,
+          district_id: body.district_id,
+          sub_district_id: body.sub_district_id,
+          residence_addr: body.residence_addr,
+          email: body.email,
+          phone: body.phone,
+          education_level: body.education_level,
+          class: body.class,
+          origin_pg: body.origin_pg,
+          origin_kgarten: body.origin_kgarten,
+          origin_elementary: body.origin_elementary,
+          origin_secondary: body.origin_secondary,
+          is_transfer: body.is_transfer,
+          last_class: body.last_class,
+          address_school: body.address_school,
+          remark: body.remark,
+          form_path: body.form_path,
+          status_class: body.status_class,
+          is_graduated: body.is_graduated,
+          approved: body.approved,
+        },
+        { id }
+      );
+      
+      if (!updateData[0]) {
+        console.log("Service - No rows updated.");
+        return responseHandler.returnError(
+          httpStatus.NOT_MODIFIED,
+          "No changes were made!"
+        );
+      }
 
-    let candidate = await this.candidatesDao.findById(id);
-
-    if (!candidate) {
+      return responseHandler.returnSuccess(
+        httpStatus.OK,
+        message,
+        {}
+      );
+    } catch (error) {
+      logger.error(error);
       return responseHandler.returnError(
-        httpStatus.NOT_FOUND,
-        "Candidate not found!"
+        httpStatus.BAD_REQUEST,
+        "Something went wrong!"
       );
     }
-
-    const updateData = await this.candidatesDao.updateWhere(
-      {
-        nisn: body.nisn,
-        full_name: body.full_name,
-        nick_name: body.nick_name,
-        gender: body.gender,
-        dob: body.dob,
-        pob: body.pob,
-        birth_order: body.birth_order,
-        number_of_siblings: body.number_of_siblings,
-        province_id: body.province_id,
-        city_id: body.city_id,
-        district_id: body.district_id,
-        sub_district_id: body.sub_district_id,
-        residence_addr: body.residence_addr,
-        email: body.email,
-        phone: body.phone,
-        education_level: body.education_level,
-        class: body.class,
-        origin_pg: body.origin_pg,
-        origin_kgarten: body.origin_kgarten,
-        origin_elementary: body.origin_elementary,
-        origin_secondary: body.origin_secondary,
-        is_transfer: body.is_transfer,
-        last_class: body.last_class,
-        address_school: body.address_school,
-        remark: body.remark,
-        form_path: body.form_path,
-        status_class: body.status_class,
-        is_graduated: body.is_graduated,
-        approved: body.approved,
-      },
-      { id }
-    );
-
-    if (updateData) {
-      return responseHandler.returnSuccess(httpStatus.OK, message, {});
-    }
-  };
+  }
 
   showCandidate = async (id) => {
     const message = "Candidate successfully retrieved!";
