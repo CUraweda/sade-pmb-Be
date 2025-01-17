@@ -37,6 +37,8 @@ router.post("/export-pdf/:id", auth(), candidatesController.exportPdf);
 
 router.post("/export-excel/:id", auth(), candidatesController.exportExcel);
 
+router.get('/export-json/:id', auth(), candidatesController.exportJSON)
+
 router.get("/show/:id", auth(), candidatesController.show);
 
 router.get("/show-all/:id", auth(), candidatesController.showAllByUserId);

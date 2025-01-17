@@ -195,6 +195,17 @@ class AuthController {
       res.status(httpStatus.BAD_GATEWAY).send(e);
     }
   };
+  
+  showRecapStatus = async (req, res) => {
+    try{
+      const responseData = await this.userService.showRecapStatus()
+      
+      res.status(responseData.statusCode).send(responseData.response);
+    }catch(e){
+      logger.error(e);
+      res.status(httpStatus.BAD_GATEWAY).send(e);
+    }
+  }
 
   forgotPassword = async (req, res) => {
     try {

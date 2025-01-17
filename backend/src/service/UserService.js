@@ -295,6 +295,13 @@ class UserService {
     return responseHandler.returnSuccess(httpStatus.OK, message, users);
   };
 
+  showRecapStatus = async () => {
+    let users = await this.userDao.getStatusData()
+    if (!users) return responseHandler.returnError(httpStatus.NOT_FOUND, "User not found!");
+
+    return responseHandler.returnSuccess(httpStatus.OK, "User Status Recap Sucessfully Retrived", users);
+  }
+
   forgotPassword = async (body) => {
     const message = "Password reset link sent!";
 
