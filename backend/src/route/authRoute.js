@@ -39,6 +39,7 @@ router.put("/update-status/:id", auth(), authController.updateStatus);
 router.put("/update-state/:id", auth(), authController.updateState);
 router.put("/update-active/:id", auth(), authController.updateActiveState);
 router.get("/show-all", auth(), authController.showAll);
+router.get("/show-recap-status", auth(), authController.showRecapStatus);
 router.post("/forgot-password", authController.forgotPassword);
 router.post(
   "/reset-password",

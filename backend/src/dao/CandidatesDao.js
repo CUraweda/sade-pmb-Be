@@ -453,6 +453,12 @@ class CandidatesDao extends SuperDao {
           },
         ],
       },
+      include: [
+        {
+          model: User,
+          required: false
+        }
+      ],
       offset: offset,
       limit: limit,
       order: [["id", "DESC"]],

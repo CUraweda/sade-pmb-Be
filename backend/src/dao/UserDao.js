@@ -1,6 +1,6 @@
 const SuperDao = require("./SuperDao");
 const models = require("../models");
-const { Op } = require("sequelize");
+const { Op, fn, col } = require("sequelize");
 
 const User = models.user;
 
@@ -33,6 +33,13 @@ class UserDao extends SuperDao {
         reset_token_exp: { [Op.gt]: Date.now() },
       },
     });
+  }
+
+  async getStatusData() {
+    return User.findAll({
+      attributes: ["reg_state", [fn("COUNT", col("reg_state")), "total_data"]],
+      group: ["reg_state"]
+    })
   }
 }
 

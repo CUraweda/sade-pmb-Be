@@ -138,7 +138,6 @@ class CandidatesController {
       const limit = parseInt(req.query.limit) || 10;
       const search = req.query.search_query || "";
       const offset = limit * page;
-      console.log(search);
       const responseData = await this.candidateService.getCandidates(
         page,
         limit,
