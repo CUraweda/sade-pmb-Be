@@ -17,7 +17,7 @@ console.log("Hello Sekolah Alam!");
 // const http = require("http");
 // socket initialization
 // const server = http.createServer(app);
-const server = https.createServer(options, app);
+const server = http.createServer(options, app);
 // eslint-disable-next-line import/order
 const io = require("socket.io")(server, { cors: { origin: "*" } });
 
@@ -28,3 +28,5 @@ server.listen(config.port, () => {
   console.log("SERVER");
   console.log(`Listening to port ${config.port}`);
 });
+
+// Test CD

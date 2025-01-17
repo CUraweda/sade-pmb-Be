@@ -59,12 +59,10 @@ class CandidatesController {
     try {
       var id = req.params.id;
 
-      const responseData = await this.candidateService.updateCandidate(
+      const responseData = await this.candidateService.updateCandidates(
         id,
         req.body
       );
-
-      const { message, data } = responseData.response;
 
       res.status(responseData.statusCode).send(responseData.response);
     } catch (e) {
