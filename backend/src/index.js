@@ -14,10 +14,10 @@ var options = {
 console.log("Hello Sekolah Alam!");
 // require('./cronJobs');
 // eslint-disable-next-line import/order
-const http = require("http");
+// const http = require("http");
 // socket initialization
-const server = http.createServer(app);
-// const server = https.createServer(options, app);
+// const server = http.createServer(app);
+const server = https.createServer(options, app);
 // eslint-disable-next-line import/order
 const io = require("socket.io")(server, { cors: { origin: "*" } });
 
