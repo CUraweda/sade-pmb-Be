@@ -1,7 +1,7 @@
 const app = require("./app");
 const config = require("./config/config");
-const https = require("https");
-// const http = require('http')
+// const https = require("https");
+const http = require('http')
 const fs = require("fs");
 
 var key = fs.readFileSync("./certs/sade.key");
@@ -16,8 +16,8 @@ console.log("Hello Sekolah Alam!");
 // eslint-disable-next-line import/order
 // const http = require("http");
 // socket initialization
-// const server = http.createServer(app);
-const server = http.createServer(options, app);
+const server = http.createServer(app);
+// const server = http.createServer(options, app);
 // eslint-disable-next-line import/order
 const io = require("socket.io")(server, { cors: { origin: "*" } });
 

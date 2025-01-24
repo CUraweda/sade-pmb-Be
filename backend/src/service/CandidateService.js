@@ -274,6 +274,19 @@ class CandidateService {
     return responseHandler.returnSuccess(httpStatus.OK, message, data);
   }
 
+  async getRecapLevel() {
+    const data = await this.candidatesDao.getRecapLevel();
+
+    if (!data) {
+      return responseHandler.returnError(
+        httpStatus.NOT_FOUND,
+        "Parents not found!"
+      );
+    }
+
+    return responseHandler.returnSuccess(httpStatus.OK, "Recap Successfully Retrived", data);
+  }
+
   async getOneHealth(id) {
     const message = "Health form successfully retrieved!";
 

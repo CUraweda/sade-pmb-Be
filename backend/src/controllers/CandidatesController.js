@@ -86,6 +86,17 @@ class CandidatesController {
     }
   };
 
+
+  showRecapLevel = async (req, res) => {
+    try {
+      const responseData = await this.candidateService.getRecapLevel();
+      res.status(responseData.statusCode).send(responseData.response);
+    } catch (e) {
+      logger.error(e);
+      res.status(httpStatus.BAD_GATEWAY).send(e);
+    }
+  };
+
   showAllByUserId = async (req, res) => {
     try {
       var id = req.params.id;

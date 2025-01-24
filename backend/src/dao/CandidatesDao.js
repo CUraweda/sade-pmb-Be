@@ -1,6 +1,6 @@
 const SuperDao = require("./SuperDao");
 const models = require("../models");
-const { Op } = require("sequelize");
+const { Op, fn, col } = require("sequelize");
 
 const Candidates = models.candidates;
 const Parents = models.parents;
@@ -87,7 +87,7 @@ class CandidatesDao extends SuperDao {
     });
   }
 
-  async getExportData(id){
+  async getExportData(id) {
     return Candidates.findOne({
       where: { id },
       include: [
@@ -463,6 +463,13 @@ class CandidatesDao extends SuperDao {
       limit: limit,
       order: [["id", "DESC"]],
     });
+  }
+
+  async getRecapLevel() {
+    return Candidates.findAll({
+      attributes: ["education_level", [fn("COUNT", col("education_level")), "total_data"]],
+      group: ["education_level"]
+    })
   }
 }
 

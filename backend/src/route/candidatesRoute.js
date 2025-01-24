@@ -43,6 +43,8 @@ router.get("/show/:id", auth(), candidatesController.show);
 
 router.get("/show-all/:id", auth(), candidatesController.showAllByUserId);
 
+router.get("/show-recap-level", auth(), candidatesController.showRecapLevel);
+
 router.get("/show-all", auth(), candidatesController.showAll);
 
 router.delete("/delete/:id", auth(), candidatesController.delete);
