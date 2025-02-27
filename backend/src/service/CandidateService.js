@@ -181,7 +181,7 @@ class CandidateService {
   };
 
   async getCandidates(page, limit, search, offset, filters) {
-    const totalRows = await this.candidatesDao.getCount(search);
+    const totalRows = await this.candidatesDao.getCount(search, filters);
     const totalPage = Math.ceil(totalRows / limit);
 
     const result = await this.candidatesDao.getCandidatesPage(

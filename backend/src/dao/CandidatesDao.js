@@ -258,102 +258,108 @@ class CandidatesDao extends SuperDao {
     );
   }
 
-  async getCount(search) {
+  async getCount(search, filters) {
+    const { approved } = filters
+    const where = {
+      [Op.or]: [
+        {
+          nisn: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          full_name: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          nick_name: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          gender: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          dob: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          pob: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          residence_addr: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          email: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          phone: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          education_level: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          class: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          origin_pg: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          origin_kgarten: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          origin_elementary: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          origin_secondary: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          last_class: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          address_school: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          remark: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+      ],
+    }
+
+    if (approved == 'Y') where['approved'] = true
+    if (approved == 'N') where['approved'] = null
+
     return Candidates.count({
-      where: {
-        [Op.or]: [
-          {
-            nisn: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            full_name: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            nick_name: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            gender: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            dob: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            pob: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            residence_addr: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            email: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            phone: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            education_level: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            class: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            origin_pg: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            origin_kgarten: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            origin_elementary: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            origin_secondary: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            last_class: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            address_school: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            remark: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-        ],
-      },
+      where
     });
   }
 
@@ -456,7 +462,9 @@ class CandidatesDao extends SuperDao {
     }
 
     if (approved == 'Y') where['approved'] = true
-    if (approved == 'N') where['approved'] = false
+    if (approved == 'N') where['approved'] = null
+
+    console.log(where)
 
     return Candidates.findAll({
       where,
