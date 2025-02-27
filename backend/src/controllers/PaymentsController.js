@@ -51,12 +51,14 @@ class PaymentsController {
       const limit = parseInt(req.query.limit) || 10;
       const search = req.query.search_query || "";
       const offset = limit * page;
-      console.log(search);
+      const { payment_type, transaction_status, full_payment } = req.query
+
       const responseData = await this.paymentService.getPayments(
         page,
         limit,
         search,
-        offset
+        offset, 
+        { payment_type, transaction_status, full_payment }
       );
 
       const { message, data } = responseData.response;

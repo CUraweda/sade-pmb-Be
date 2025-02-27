@@ -17,14 +17,15 @@ class PaymentService {
     this.PdfService = new PdfService();
   }
 
-  getPayments = async (page, limit, search, offset) => {
-    const totalRows = await this.paymentsDao.getCount(search);
+  getPayments = async (page, limit, search, offset, filters) => {
+    const totalRows = await this.paymentsDao.getCount(search, filters);
     const totalPage = Math.ceil(totalRows / limit);
 
     const result = await this.paymentsDao.getPaymentsPage(
       search,
       offset,
-      limit
+      limit,
+      filters
     );
 
     return responseHandler.returnSuccess(
