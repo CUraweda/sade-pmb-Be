@@ -180,14 +180,15 @@ class CandidateService {
     return responseHandler.returnSuccess(httpStatus.OK, message, candidate);
   };
 
-  async getCandidates(page, limit, search, offset) {
+  async getCandidates(page, limit, search, offset, filters) {
     const totalRows = await this.candidatesDao.getCount(search);
     const totalPage = Math.ceil(totalRows / limit);
 
     const result = await this.candidatesDao.getCandidatesPage(
       search,
       offset,
-      limit
+      limit,
+      filters
     );
 
     return responseHandler.returnSuccess(
