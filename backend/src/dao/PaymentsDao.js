@@ -108,41 +108,67 @@ class PaymentsDao extends SuperDao {
     });
   }
 
-  async getCount(search) {
+  async getCount(search, filters = {}) {
+    const { payment_type, transaction_status, full_payment } = filters
+    const where = {
+      [Op.or]: [
+        {
+          order_id: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          transaction_status: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+      ],
+    }
+
+    if (payment_type) where['payment_type'] = payment_type
+    
+    if (transaction_status) where['transaction_status'] = transaction_status
+
+    if (full_payment == 'Y') where['full_payment'] = true
+    if (full_payment == 'N') 
+      where["full_payment"] = {
+        [Op.or]: [null, false],
+      };
+
     return Payments.count({
-      where: {
-        [Op.or]: [
-          {
-            order_id: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            transaction_status: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-        ],
-      },
+      where
     });
   }
 
-  async getPaymentsPage(search, offset, limit) {
+  async getPaymentsPage(search, offset, limit, filters = {}) {
+    const { payment_type, transaction_status, full_payment } = filters
+    const where = {
+      [Op.or]: [
+        {
+          order_id: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+        {
+          transaction_status: {
+            [Op.like]: "%" + search + "%",
+          },
+        },
+      ],
+    }
+
+    if (payment_type) where['payment_type'] = payment_type
+
+    if (transaction_status) where['transaction_status'] = transaction_status
+
+    if (full_payment == 'Y') where['full_payment'] = true
+    if (full_payment == 'N') 
+      where["full_payment"] = {
+        [Op.or]: [null, false],
+      };
+
     return Payments.findAll({
-      where: {
-        [Op.or]: [
-          {
-            order_id: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-          {
-            transaction_status: {
-              [Op.like]: "%" + search + "%",
-            },
-          },
-        ],
-      },
+      where,
       offset: offset,
       limit: limit,
       order: [["id", "DESC"]],

@@ -259,7 +259,7 @@ class CandidatesDao extends SuperDao {
   }
 
   async getCount(search, filters) {
-    const { approved } = filters
+    const { approved, is_graduated } = filters
     const where = {
       [Op.or]: [
         {
@@ -355,8 +355,18 @@ class CandidatesDao extends SuperDao {
       ],
     }
 
+    
     if (approved == 'Y') where['approved'] = true
-    if (approved == 'N') where['approved'] = null
+    if (approved == 'N') 
+      where["approved"] = {
+        [Op.or]: [null, false],
+      };
+
+    if (is_graduated == 'Y') where['is_graduated'] = true
+    if (is_graduated == 'N') 
+      where["is_graduated"] = {
+        [Op.or]: [null, false],
+      };
 
     return Candidates.count({
       where
@@ -364,7 +374,7 @@ class CandidatesDao extends SuperDao {
   }
 
   async getCandidatesPage(search, offset, limit, filters = {}) {
-    const { approved } = filters
+    const { approved, is_graduated } = filters
 
     const where = {
       [Op.or]: [
@@ -462,10 +472,17 @@ class CandidatesDao extends SuperDao {
     }
 
     if (approved == 'Y') where['approved'] = true
-    if (approved == 'N') where['approved'] = null
+    if (approved == 'N') 
+      where["approved"] = {
+        [Op.or]: [null, false],
+      };
 
-    console.log(where)
-
+    if (is_graduated == 'Y') where['is_graduated'] = true
+    if (is_graduated == 'N') 
+      where["is_graduated"] = {
+        [Op.or]: [null, false],
+      };
+  
     return Candidates.findAll({
       where,
       include: [
