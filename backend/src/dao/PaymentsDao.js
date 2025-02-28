@@ -169,6 +169,7 @@ class PaymentsDao extends SuperDao {
 
     return Payments.findAll({
       where,
+      include: [{ model: Users, attributes: ["id", "full_name", "email"] }],
       offset: offset,
       limit: limit,
       order: [["id", "DESC"]],
