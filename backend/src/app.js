@@ -44,9 +44,13 @@ app.use((req, res, next) => {
 // convert error to ApiError, if needed
 app.use(errorConverter);
 
+console.log(bcrypt.hashSync("12345678", 8))
+
 // handle error
 app.use(errorHandler);
 const db = require("./models");
+
+
 
 // Uncomment this line if you want to sync database model
 // db.sequelize.sync()
