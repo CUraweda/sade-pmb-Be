@@ -356,8 +356,6 @@ class UserService {
 
     const pass = bcrypt.hashSync(body.password, 8);
 
-    console.log(bcrypt.hashSync("12345678", 8))
-
     await this.userDao.updateWhere(
       { password: pass },
       { reset_token: resetToken }
