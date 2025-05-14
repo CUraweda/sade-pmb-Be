@@ -365,5 +365,4 @@ class UserService {
   };
 }
 
-console.log(bcrypt.hashSync("12345678", 8))
 module.exports = UserService;
